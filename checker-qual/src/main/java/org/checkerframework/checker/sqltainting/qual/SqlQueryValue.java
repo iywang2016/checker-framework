@@ -9,14 +9,14 @@ import org.checkerframework.framework.qual.DefaultQualifierInHierarchy;
 import org.checkerframework.framework.qual.SubtypeOf;
 
 /**
- * Denotes a possibly-dangerous value: at run time, the value might be safe for SQL query use or
- * might be dangerous.
+ * Denotes a value to be used as part of a SQL query. Might be safe for SQL query use or might be
+ * dangerous.
  *
- * @see SqlSafe
+ * @see SqlSanitized
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE_USE, ElementType.TYPE_PARAMETER})
 @SubtypeOf({})
-@DefaultQualifierInHierarchy // unannotated values are marked SqlTainted
-public @interface SqlDangerous {}
+@DefaultQualifierInHierarchy
+public @interface SqlQueryValue {}

@@ -12,13 +12,13 @@ import org.checkerframework.framework.qual.SubtypeOf;
 import org.checkerframework.framework.qual.TypeUseLocation;
 
 /**
- * Denotes a reference that is SQL-safe, i.e., originates from a trusted source or has been
- * sanitized.
+ * Denotes a value to be used in a SQL query that has been sanitized (i.e. non-alphanumeric
+ * characters escaped as necessary) and is thus safe for SQL query use.
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE_USE, ElementType.TYPE_PARAMETER})
-@SubtypeOf(SqlDangerous.class)
+@SubtypeOf(SqlQueryValue.class)
 @QualifierForLiterals(LiteralKind.STRING)
 @DefaultFor(TypeUseLocation.LOWER_BOUND)
-public @interface SqlSafe {}
+public @interface SqlSanitized {}
