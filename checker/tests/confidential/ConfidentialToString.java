@@ -11,4 +11,10 @@ public class ConfidentialToString {
   void nonConfObj(@NonConfidential Object nonConfObj) {
     @NonConfidential String nonConfRes = nonConfObj.toString();
   }
+
+  void confStr(@Confidential String confStr) {
+    // :: error: [assignment]
+    @NonConfidential String nonConfStrRes = confStr.toString();
+    @Confidential String confStrRes = confStr.toString();
+  }
 }
