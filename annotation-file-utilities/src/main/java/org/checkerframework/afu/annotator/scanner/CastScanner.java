@@ -13,7 +13,7 @@ import java.util.Map;
  * be used to scan the source tree and determine the index of a given cast, where the i^th index
  * corresponds to the i^th cast, using 0-based indexing.
  */
-public class CastScanner extends CommonScanner {
+public final class CastScanner extends CommonScanner {
 
   /**
    * Computes the index of the given cast tree amongst all cast trees inside its method, using
@@ -75,11 +75,8 @@ public class CastScanner extends CommonScanner {
    * @param offset the offset to add
    */
   public static void addCastToMethod(String methodName, Integer offset) {
-    List<Integer> offsetList = methodNameToCastOffsets.get(methodName);
-    if (offsetList == null) {
-      offsetList = new ArrayList<>();
-      methodNameToCastOffsets.put(methodName, offsetList);
-    }
+    List<Integer> offsetList =
+        methodNameToCastOffsets.computeIfAbsent(methodName, k -> new ArrayList<>());
     if (methodName.equals(prevMethodName) && offset - prevOffset == 3) {
       // consecutive instructions -> nested casts -> reverse order!
       // TODO: other cases for nested casts?

@@ -17,7 +17,7 @@ import org.plumelib.util.CollectionsPlume;
 import org.plumelib.util.IPair;
 
 /** A set of utilities and factory methods useful for working with TestDiagnostics. */
-public class TestDiagnosticUtils {
+public final class TestDiagnosticUtils {
 
   /** Do not instantiate. */
   private TestDiagnosticUtils() {
@@ -140,8 +140,11 @@ public class TestDiagnosticUtils {
    * @param diagnosticString the string to parse
    * @return a diagnostic parsed from the given string
    */
-  @SuppressWarnings("nullness") // TODO: regular expression group access
-  protected static TestDiagnostic fromPatternMatching(
+  @SuppressWarnings({
+    "nullness", // TODO: regular expression group access
+    "regex:group.count" // group count varies by pattern; callers ensure correct group counts
+  })
+  /*package-private*/ static TestDiagnostic fromPatternMatching(
       Pattern diagnosticPattern,
       Pattern warningPattern,
       String filename,
@@ -297,7 +300,7 @@ public class TestDiagnosticUtils {
 
   /**
    * Given a category string that may be prepended with "fixable-", return the category enum that
-   * corresponds with the category and whether or not it is a isFixable error
+   * corresponds with the category and whether or not it is an isFixable error.
    *
    * @param category a category string that may be prepended with "fixable-"
    * @return a pair of the category and whether it was prepended with "fixable-"

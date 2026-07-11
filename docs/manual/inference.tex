@@ -230,7 +230,7 @@ You may need to wait a few minutes for the command to complete.
 
 \subsectionAndLabel{Whole-program inference results}{wpi-results}
 
-The result of invoking \<wpi.sh> are log files stored in the \<dljc-out/> folder
+The results of invoking \<wpi.sh> are log files stored in the \<dljc-out/> folder
 of the target project.
 The \<dljc-out/> folder contains:
 
@@ -266,13 +266,10 @@ The requirements to run \<wpi.sh> and \<wpi-many.sh> are the same:
 \begin{itemize}
 \item The project on which inference is run must contain an Ant, Gradle,
   or Maven buildfile that compiles the project.
-\item At least one of the \verb|JAVA_HOME|,
-  \verb|JAVA8_HOME|, \verb|JAVA11_HOME|, \verb|JAVA17_HOME|, or \verb|JAVA21_HOME|
+\item At least one of the \verb|JAVA_HOME|, \verb|JAVA17_HOME|,  or \verb|JAVA21_HOME|
   environment variables must be set.
 \item If set, the \verb|JAVA_HOME| environment variable must point to a
-  Java 8, 11, 17, 21, or 22 JDK.
-\item If set, the \verb|JAVA8_HOME| environment variable must point to a Java 8 JDK.
-\item If set, the \verb|JAVA11_HOME| environment variable must point to a Java 11 JDK.
+  Java JDK.
 \item If set, the \verb|JAVA17_HOME| environment variable must point to a Java 17 JDK.
 \item If set, the \verb|JAVA21_HOME| environment variable must point to a Java 21 JDK.
 \item If set, the \verb|JAVA22_HOME| environment variable must point to a Java 22 JDK.
@@ -475,7 +472,7 @@ consistent with all the source code it is given.
 (Section~\ref{whole-program-inference-ignores-some-code}
 explains when type inference ignores some code.)
 This may be different than the specification the programmer had in mind
-when writing tho code.
+when writing the code.
 If the program uses a method or field in a limited way, then the inferred
 annotations will be legal for the program as
 currently written but may not be as general as possible and may not
@@ -606,7 +603,7 @@ that is, the \<.jaif> or \<.ajava> files are unchanged between two runs.
 When the type-checker is run on the program with the final annotations
 inserted, there might still be errors.  This may be because the tool did
 not infer enough annotations, or because your program cannot typecheck
-(either because contains a defect, or because it contains subtle code that
+(either because it contains a defect, or because it contains subtle code that
 is beyond the capabilities of the type system).
 However, each of the inferred annotations is sound, and this reduces your
 manual effort in annotating the program.

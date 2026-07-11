@@ -36,7 +36,7 @@ public abstract class CloneOrUpdateRelatedTask extends GitTask {
    */
   private static final String DEFAULT_ORG = "typetools";
 
-  /** The branch to use to clone the related repository if a matching branch is not found */
+  /** The branch to use to clone the related repository if a matching branch is not found. */
   private static final String DEFAULT_BRANCH = "master";
 
   /**
@@ -50,7 +50,7 @@ public abstract class CloneOrUpdateRelatedTask extends GitTask {
   /**
    * Creates a new CloneOrUpdateRelatedTask.
    *
-   * @param execOperations Used to run exec commands
+   * @param execOperations used to run exec commands
    */
   @Inject
   public CloneOrUpdateRelatedTask(ExecOperations execOperations) {
@@ -69,7 +69,7 @@ public abstract class CloneOrUpdateRelatedTask extends GitTask {
     } else {
       OrgBranch fbCf = getOrgBranch(new File(cfDir, ".git"));
       if (fbCf == null
-          || !orgExists(fbCf.org, relatedRepoName)
+          || !repoExists(fbCf.org, relatedRepoName)
           || !remoteBranchExists(fbCf.org, relatedRepoName, fbCf.branch)) {
         fbCf = new OrgBranch(DEFAULT_ORG, DEFAULT_BRANCH);
       }
@@ -100,7 +100,7 @@ public abstract class CloneOrUpdateRelatedTask extends GitTask {
     }
     String cfOrg = orgBranchCF.org;
     String cfBranch = orgBranchCF.branch;
-    if (!orgExists(cfOrg, relatedRepoName)) {
+    if (!repoExists(cfOrg, relatedRepoName)) {
       // There is no related repo that is in the same org as the CF clone.
       return;
     }
@@ -113,12 +113,14 @@ public abstract class CloneOrUpdateRelatedTask extends GitTask {
       // org.
       return;
     }
-    if (remoteBranchExists(cfOrg, relatedRepoName, cfBranch)) {
-      throw new RuntimeException(
-          String.format(
-              "Please checkout the corresponding %s branch. URL: %s Branch: %s.",
-              relatedRepoName, getGitHubHttpsUrl(cfOrg, relatedRepoName), cfBranch));
-    }
+    // This is disabled because it breaks the following scenario:  create a new branch of jdk
+    // without a corresponding checker-framework branch, make a pull request.
+    // if (remoteBranchExists(cfOrg, relatedRepoName, cfBranch)) {
+    //   throw new RuntimeException(
+    //       String.format(
+    //           "Please checkout the corresponding %s branch. URL: %s Branch: %s.",
+    //           relatedRepoName, getGitHubHttpsUrl(cfOrg, relatedRepoName), cfBranch));
+    // }
   }
 
   /**
@@ -231,7 +233,7 @@ public abstract class CloneOrUpdateRelatedTask extends GitTask {
    * @param repoName a repository name
    * @return true if "https://github.com/{@code org}/{@code repoName}" exists
    */
-  private boolean orgExists(final String org, final String repoName) {
+  private boolean repoExists(final String org, final String repoName) {
     return urlExists(getGitHubHttpsUrl(org, repoName));
   }
 

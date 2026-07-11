@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.IOException;
 import javax.inject.Inject;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -83,15 +82,33 @@ public abstract class GitTask extends DefaultTask {
    * @param directory where the clone to update is
    */
   public void update(File directory) {
+    //       If the repository remote is configured using ssh, e.g.,
+    // git@github.com:typetools/checker-framework.git,
+    // then `git.pull().call()` may get permission problems such as:
+    //       org.eclipse.jgit.api.errors.TransportException: git@github.com:smillst/jdk.git:
+    // invalid privatekey: ...
+    // or
+    //   javax.security.auth.login.FailedLoginException:
+    //   No password data for encrypted resource=/home/mernst/.ssh/id_rsa
+    // Furthermore, such messages cause a Java stack trace that clutters the Gradle output and makes
+    // it look like compilation failed.
+    // So instead run `git pull` on the command line.
+
+    boolean calledGit = false;
+
     try (Git git = Git.open(directory)) {
-      git.pull().call();
-    } catch (GitAPIException e) {
-      //       If the repository remote is configured using ssh, e.g.,
-      // git@github.com:typetools/checker-framework.git,
-      //       then the above may get permission problems such as:
-      //       org.eclipse.jgit.api.errors.TransportException: git@github.com:smillst/jdk.git:
-      // invalid privatekey: ...
-      //       So fall back to running git pull on the command line.
+
+      String originUrl = git.getRepository().getConfig().getString("remote", "origin", "url");
+
+      if (originUrl.startsWith("https:")) {
+        git.pull().call();
+        calledGit = true;
+      }
+    } catch (Exception e) {
+      // Nothing to do.
+    }
+
+    if (!calledGit) {
       org.gradle.process.ExecResult execResult =
           execOperations.exec(
               execSpec -> {
@@ -104,8 +121,6 @@ public abstract class GitTask extends DefaultTask {
         getLogger()
             .warn("git pull failed in {} with exit code {}", directory, execResult.getExitValue());
       }
-    } catch (IOException e) {
-      getLogger().warn("git pull failed in {} because {}", directory, e.getMessage());
     }
   }
 }

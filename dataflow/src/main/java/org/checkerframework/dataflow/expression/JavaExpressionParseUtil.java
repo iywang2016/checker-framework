@@ -9,8 +9,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeMirror;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.javacutil.javacparse.JavacParse;
-import org.checkerframework.javacutil.javacparse.JavacParseResult;
+import org.plumelib.javacparse.JavacParse;
+import org.plumelib.javacparse.JavacParseResult;
 import org.plumelib.util.StringsPlume;
 
 /**
@@ -21,7 +21,7 @@ import org.plumelib.util.StringsPlume;
  * @checker_framework.manual #dependent-types Annotations whose argument is a Java expression
  *     (dependent type annotations)
  */
-public class JavaExpressionParseUtil {
+public final class JavaExpressionParseUtil {
 
   /** Do not instantiate. */
   private JavaExpressionParseUtil() {

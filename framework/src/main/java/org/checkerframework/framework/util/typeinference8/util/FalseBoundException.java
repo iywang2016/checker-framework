@@ -13,7 +13,7 @@ public class FalseBoundException extends RuntimeException {
   /**
    * Creates a false bound exception.
    *
-   * @param constraint the constraint the was not resolved
+   * @param constraint the constraint that was not resolved
    * @param result the result of reduction
    */
   public FalseBoundException(Constraint constraint, ReductionResult result) {
@@ -23,8 +23,6 @@ public class FalseBoundException extends RuntimeException {
             + " Result: "
             + result
             + "\n"
-            + (constraint instanceof TypeConstraint
-                ? ((TypeConstraint) constraint).constraintHistory()
-                : ""));
+            + (constraint instanceof TypeConstraint tc ? tc.constraintHistory() : ""));
   }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  * instanceof check, where the i^th index corresponds to the i^th instanceof check, using 0-based
  * indexing.
  */
-public class InstanceOfScanner extends CommonScanner {
+public final class InstanceOfScanner extends CommonScanner {
 
   private int index = -1;
   private boolean done = false;
@@ -73,11 +73,8 @@ public class InstanceOfScanner extends CommonScanner {
    * @param offset the offset to add
    */
   public static void addInstanceOfToMethod(String methodName, Integer offset) {
-    List<Integer> offsetList = methodNameToInstanceOfOffsets.get(methodName);
-    if (offsetList == null) {
-      offsetList = new ArrayList<>();
-      methodNameToInstanceOfOffsets.put(methodName, offsetList);
-    }
+    List<Integer> offsetList =
+        methodNameToInstanceOfOffsets.computeIfAbsent(methodName, k -> new ArrayList<>());
     offsetList.add(offset);
   }
 
