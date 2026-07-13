@@ -25,5 +25,5 @@ import org.checkerframework.framework.qual.TypeUseLocation;
 @SubtypeOf(UnknownConfidential.class)
 @QualifierForLiterals({LiteralKind.STRING, LiteralKind.PRIMITIVE})
 @DefaultQualifierInHierarchy
-@DefaultFor(value = {TypeUseLocation.LOCAL_VARIABLE, TypeUseLocation.UPPER_BOUND})
+@DefaultFor(value = {TypeUseLocation.LOCAL_VARIABLE})
 public @interface NonConfidential {}
